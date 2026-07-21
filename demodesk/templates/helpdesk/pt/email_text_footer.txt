@@ -1,0 +1,6 @@
+Cumprimentos,
+
+{{ queue.title }}{% if queue.email_address %}
+{{ queue.email_address }}{% endif %}
+
+Este e-mail foi enviado a si como utilizador do nosso serviço de suporte, de acordo com a nossa política de privacidade. Por favor avise-nos se acredita ter recebido este e-mail por engano.

@@ -1,0 +1,51 @@
+{% load i18n %}
+{% load static %}
+{% load load_helpdesk_settings %}
+{% with request|load_helpdesk_settings as helpdesk_settings %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% include 'helpdesk/base-head.html' %}
+    {% block helpdesk_head %}{% endblock %}
+
+</head>
+
+<body id="bg-dark">
+
+    {% include "helpdesk/navigation-header.html" %}
+
+    <nav class="public-subnav">
+        <a href="{% url 'helpdesk:home' %}"><i class="fas fa-fw fa-home"></i> {% trans "Página Inicial" %}</a>
+        <a href="{% url 'helpdesk:submit' %}"><i class="fas fa-fw fa-plus-circle"></i> {% trans "Novo Ticket" %}</a>
+        {% if helpdesk_settings.HELPDESK_KB_ENABLED %}
+        <a href="{% url 'helpdesk:kb_index' %}"><i class="fas fa-fw fa-database"></i> {% trans "Base de Conhecimento" %}</a>
+        {% endif %}
+        {% if user.is_authenticated %}
+        <a href="{% url 'helpdesk:my-tickets' %}"><i class="fas fa-fw fa-tasks"></i> {% trans "Os Meus Tickets" %}</a>
+        {% endif %}
+    </nav>
+
+    <div id="content-wrapper" class="public-content">
+
+        <div class="container-fluid">
+
+            <!-- Breadcrumbs-->
+            <ol class="breadcrumb">
+                {% block helpdesk_breadcrumb %}{% endblock %}
+            </ol>
+
+            {% block helpdesk_body %}{% endblock %}
+
+        </div>
+        <!-- /.container-fluid -->
+
+    </div>
+    <!-- /#content-wrapper -->
+
+    {% include "helpdesk/debug.html" %}
+    {% include 'helpdesk/base_js.html' %}
+    {% block helpdesk_js %}{% endblock %}
+</body>
+</html>
+{% endwith %}

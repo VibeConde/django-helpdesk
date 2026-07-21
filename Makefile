@@ -112,6 +112,10 @@ demo:
 	uv run manage.py loaddata emailtemplate.json
 	# The password for the "admin" user is 'Pa33w0rd' for the demo project.
 	uv run manage.py loaddata demo.json
+	# Filas/categorias base (sem dados de clientes) inspiradas no Webcolinas-Manager
+	uv run manage.py loaddata webcolinas_categories.json
+	# Templates de e-mail em português (pt-PT)
+	uv run manage.py loaddata pt_emailtemplates.json
 
 
 #: rundemo - Run demo server using Python3.

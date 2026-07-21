@@ -65,6 +65,7 @@ if HELPDESK_TEAMS_MODE_ENABLED:
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -77,7 +78,7 @@ ROOT_URLCONF = "demodesk.config.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [os.path.join(BASE_DIR, "templates")],
         "APP_DIRS": True,
         "OPTIONS": {
             "debug": True,
@@ -207,7 +208,13 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 # The most complete translations are: es-MX, ru, zh-Hans
 # Contribute to our translations via Transifex if you can!
 # See CONTRIBUTING.rst for more info.
-LANGUAGE_CODE = "en-US"
+LANGUAGE_CODE = "pt-pt"
+
+# Força português para todos, independente do Accept-Language do browser
+# (sem isto, o Django dá prioridade à preferência de idioma do browser sobre LANGUAGE_CODE)
+LANGUAGES = [
+    ("pt", "Português"),
+]
 
 TIME_ZONE = "UTC"
 
@@ -223,6 +230,11 @@ USE_TZ = True
 STATIC_URL = "/static/"
 # static root needs to be defined in order to use collectstatic
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
+
+# Project-level static overrides (checked before src/helpdesk/static/ by
+# Django's default FileSystemFinder + AppDirectoriesFinder order), so UI
+# customizations never require editing the vendored helpdesk package.
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static_src")]
 
 # MEDIA_ROOT is where media uploads are stored.
 # We set this to a directory to host file attachments created

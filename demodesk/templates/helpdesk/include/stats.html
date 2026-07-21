@@ -1,0 +1,24 @@
+{% load i18n %}
+
+<div class="row">
+  {% for entry in basic_ticket_stats.open_ticket_stats %}
+  <div class="col-lg-4 col-sm-6 mb-3">
+    <div class="stat-tile">
+      <span class="stat-tile__chip stat-tile__chip--{{ entry.2 }}">
+        <i class="fas {% if entry.2 == 'success' %}fa-check{% elif entry.2 == 'warning' %}fa-exclamation{% else %}fa-fire{% endif %}"></i>
+        {% if entry.2 == 'success' %}Em dia{% elif entry.2 == 'warning' %}A vigiar{% else %}Crítico{% endif %}
+      </span>
+      <div class="stat-tile__value">{{ entry.1 }}</div>
+      <div class="stat-tile__label">
+        {% if entry.0 == "Tickets < 30 days" %}Tickets abertos há menos de 30 dias
+        {% elif entry.0 == "Tickets 30 - 60 days" %}Tickets abertos entre 30 e 60 dias
+        {% else %}Tickets abertos há mais de 60 dias{% endif %}
+      </div>
+      <a class="stat-tile__footer" href="{% if entry.1 > 0 %}{% url 'helpdesk:list' %}?{{ entry.3 }}{% else %}#{% endif %}">
+        <span>{% if entry.1 > 0 %}Ver tickets{% else %}Sem tickets neste intervalo{% endif %}</span>
+        <i class="fas fa-angle-right"></i>
+      </a>
+    </div>
+  </div>
+  {% endfor %}
+</div>

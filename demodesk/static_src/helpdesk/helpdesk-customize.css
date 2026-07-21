@@ -1,0 +1,92 @@
+/*
+Project-level CSS overrides for django-helpdesk.
+Loaded automatically via helpdesk-extend.css's @import 'helpdesk-customize.css';
+Never edit src/helpdesk/ for visual changes - add rules here instead, so a
+future django-helpdesk update never conflicts with our customizations.
+*/
+
+/* Dashboard stat tiles (see design.md: "Por que os stat tiles do dashboard
+   deixaram de ser blocos de cor cheia?") */
+.stat-tile {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #ffffff;
+  border: 1px solid #e1e0d9;
+  border-radius: 10px;
+  padding: 1.1rem 1.25rem 0;
+  overflow: hidden;
+}
+
+.stat-tile__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  padding: 0.22rem 0.6rem;
+  border-radius: 999px;
+  margin-bottom: 0.6rem;
+}
+.stat-tile__chip--success { background: #0ca30c; color: #ffffff; }
+.stat-tile__chip--warning { background: #fab219; color: #241a00; }
+.stat-tile__chip--danger  { background: #d03b3b; color: #ffffff; }
+
+.stat-tile__value {
+  font-size: 2.1rem;
+  font-weight: 600;
+  line-height: 1.1;
+  color: #0b0b0b;
+}
+
+.stat-tile__label {
+  margin-top: 0.25rem;
+  font-size: 0.85rem;
+  color: #52514e;
+  flex-grow: 1;
+}
+
+.stat-tile__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 1rem -1.25rem 0;
+  padding: 0.65rem 1.25rem;
+  border-top: 1px solid #e1e0d9;
+  font-size: 0.85rem;
+  color: #52514e;
+  text-decoration: none;
+}
+.stat-tile__footer:hover {
+  background: #f9f9f7;
+  color: #0b0b0b;
+}
+
+/* Public homepage - light nav strip replacing the removed sidebar
+   (see design.md: "Por que a página pública deixou de ter sidebar?") */
+.public-subnav {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  padding: 0.6rem 1.5rem;
+  background: #f9f9f7;
+  border-bottom: 1px solid #e1e0d9;
+  font-size: 0.9rem;
+}
+.public-subnav a {
+  color: #52514e;
+  text-decoration: none;
+}
+.public-subnav a:hover {
+  color: #0b0b0b;
+}
+.public-content {
+  width: 100%;
+  /* #content-wrapper deixou de estar dentro de #wrapper (removemos a sidebar),
+     por isso perdeu o padding-bottom que vinha da regra "#wrapper #content-wrapper"
+     do sb-admin.css - sem isto o rodapé antigo (absolute) sobrepunha o conteúdo.
+     Já não temos rodapé nas páginas públicas, mas mantemos a folga por baixo. */
+  padding-bottom: 3rem;
+}
