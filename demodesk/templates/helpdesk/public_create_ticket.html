@@ -1,0 +1,17 @@
+{% extends "helpdesk/public_base.html" %}
+{% load i18n %}
+
+{% block helpdesk_title %}{% trans "Create Ticket" %}{% endblock %}
+
+{% block helpdesk_body %}
+    <div class="public-page-card">
+        <div class="public-page-card__icon" style="background:#e6f1ef; color:#146b64;"><i class="fas fa-plus"></i></div>
+        <h1>{% trans "Submeter um Ticket" %}</h1>
+        <p class="lead">{% trans "Descreva o seu pedido com o máximo de detalhe possível — a equipa entra em contacto assim que possível." %}</p>
+        {% include 'helpdesk/public_create_ticket_base.html' %}
+    </div>
+{% endblock %}
+
+{% block helpdesk_js %}
+    {{ form.media.js }}
+{% endblock %}

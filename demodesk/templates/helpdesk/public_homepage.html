@@ -43,11 +43,11 @@
                 <form method='get' action="{% url 'helpdesk:public_view' %}" class="public-lookup-form">
                     <div class="{% if field.errors %}has-error{% endif %}">
                         <label for='id_ticket'>{% trans "Ticket" %}</label>
-                        <input type='text' name='ticket' id='id_ticket' class='form-control'/>
+                        <input type='text' name='ticket' id='id_ticket' class='form-control' placeholder="ex: SRV-5"/>
                     </div>
                     <div class="{% if field.errors %}has-error{% endif %}">
                         <label for='id_email'>{% trans "O Seu Endereço de E-Mail" %}</label>
-                        <input type='text' name='email' id='id_email' class='form-control'/>
+                        <input type='text' name='email' id='id_email' class='form-control' placeholder="nome@exemplo.com"/>
                     </div>
                     <button type='submit' class="public-btn public-btn--coral">{% trans "Ver Ticket" %}</button>
                 </form>

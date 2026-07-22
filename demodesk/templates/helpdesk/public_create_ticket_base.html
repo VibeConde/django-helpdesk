@@ -1,0 +1,45 @@
+{% load i18n bootstrap4form %}
+{% load load_helpdesk_settings %}
+
+{% with request|load_helpdesk_settings as helpdesk_settings %}
+    {% if helpdesk_settings.HELPDESK_SUBMIT_A_TICKET_PUBLIC %}
+        {% if form.errors %}
+            {% include 'helpdesk/include/alert_form_errors.html' %}
+        {% endif %}
+        <form role="form" method='post' enctype='multipart/form-data' id="public-ticket-form">
+            {% csrf_token %}
+            {{ form|bootstrap4form }}
+            <div class="public-sla-note">
+                <i class="fas fa-clock"></i>
+                {% trans "O seu pedido será respondido nas próximas 48 horas, através do email indicado." %}
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg btn-block">
+                {% trans "Submit Ticket" %} <i class="fa fa-paper-plane"></i>
+            </button>
+        </form>
+        <script>
+        (function () {
+            var queueLabel = document.querySelector('label[for="id_queue"]');
+            if (queueLabel) { queueLabel.textContent = "{% trans 'Tipo de Pedido' %}"; }
+
+            var titleInput = document.getElementById('id_title');
+            if (titleInput) { titleInput.placeholder = "{% trans 'Tipo de problema — nome da empresa ou domínio' %}"; }
+
+            var dueDateInput = document.getElementById('id_due_date');
+            if (dueDateInput) {
+                var dueDateWrap = dueDateInput.closest('.form-group');
+                if (dueDateWrap) { dueDateWrap.style.display = 'none'; }
+            }
+
+            var canalInput = document.getElementById('id_custom_canal');
+            if (canalInput) {
+                canalInput.value = 'Email';
+                var canalWrap = canalInput.closest('.form-group');
+                if (canalWrap) { canalWrap.style.display = 'none'; }
+            }
+        })();
+        </script>
+    {% else %}
+        <p>{% trans "Public ticket submission is disabled. Please contact the administrator for assistance." %}</p>
+    {% endif %}
+{% endwith %}

@@ -56,6 +56,18 @@
 | Ver um Ticket: mantém o formulário real (`name="ticket"`, `name="email"`, acção `helpdesk:public_view`), só o visual mudou | ✅ |
 | **Funções testadas ponta-a-ponta após o redesign:** `/tickets/submit/` (200), `/kb/` (200), consulta de um ticket real por número+email (`SRV-5` + `teste@example.com`) devolve o ticket correcto | ✅ |
 
+### UI da criação/consulta de ticket ✅ IMPLEMENTADO
+
+| Funcionalidade | Estado |
+|---|---|
+| Override `public_create_ticket.html` (`/tickets/submit/`) — cartão consistente com a homepage; o formulário em si (`public_create_ticket_base.html`, `{{ form|bootstrap4form }}`) não foi tocado | ✅ |
+| Override `public_view_form.html` (`/view/` sem parâmetros, ou depois de uma consulta falhada) — estava em HTML `<dl>` sem estilo nenhum, provavelmente a causa da sensação de "duplicado"/quebrado ao consultar um ticket; agora é um cartão igual aos das outras páginas públicas | ✅ |
+| `public_view_ticket.html` (a página que mostra o ticket encontrado) — **não foi reescrita** (é grande e tem lógica de anexos/JS embutida; duplicar o template seria arriscado). Em vez disso, herda as melhorias por CSS: sem sidebar, fundo consistente, botões `btn-primary` a teal, cabeçalhos de tabela em creme | ✅ (CSS only) |
+| Testado: submissão de ticket (campos `title`/`queue`/`body`/`priority` intactos), consulta válida (`SRV-5` + email → mostra o ticket), consulta inválida (→ volta ao formulário estilizado, sem erro de servidor) | ✅ |
+| **Bug corrigido** — `src/helpdesk/views/public.py`, 2 linhas: `error_message` passava como argumento posicional em vez de nomeado, por isso a mensagem de "ticket/email inválido" nunca aparecia. **Única exceção à regra de não tocar em `src/helpdesk/`** nesta sessão — é correção de bug, não personalização visual; documentado aqui para o caso de um futuro `git pull` gerar conflito nestas 2 linhas | ✅ |
+| Formulário de submissão (`public_create_ticket_base.html`, override): intro unificada (removido "Salvo indicação em contrário"), rótulo "Fila"→"Tipo de Pedido", placeholder no resumo ("Tipo de problema — nome da empresa ou domínio"), campo "Data limite" escondido e substituído por nota de SLA (resposta em 48h por email), campo "Canal" escondido e fixado a "Email" — tudo via JS/CSS no template, sem tocar no `Form` Python nem nos nomes dos campos | ✅ |
+| **Testado ponta-a-ponta:** ticket real submetido (#9) com os campos escondidos — `due_date=None`, `canal="Email"` gravados corretamente; consulta inválida agora mostra "ID de ticket ou endereço de e-mail inválido. Tente novamente."; consulta válida continua a mostrar o ticket | ✅ |
+
 ### Categorias de tickets ✅ IMPLEMENTADO
 
 | Funcionalidade | Estado |

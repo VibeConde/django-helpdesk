@@ -224,7 +224,10 @@ class ViewTicket(TemplateView):
                 return SearchForTicketView.as_view()(request)
             else:
                 return SearchForTicketView.as_view()(
-                    request, _("Missing ticket ID or e-mail address. Please try again.")
+                    request,
+                    error_message=_(
+                        "Missing ticket ID or e-mail address. Please try again."
+                    ),
                 )
 
         try:
@@ -242,7 +245,10 @@ class ViewTicket(TemplateView):
                 )
         except (ObjectDoesNotExist, ValueError):
             return SearchForTicketView.as_view()(
-                request, _("Invalid ticket ID or e-mail address. Please try again.")
+                request,
+                error_message=_(
+                    "Invalid ticket ID or e-mail address. Please try again."
+                ),
             )
 
         if "close" in request.GET and ticket.status == Ticket.RESOLVED_STATUS:

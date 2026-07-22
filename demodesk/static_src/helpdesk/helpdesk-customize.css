@@ -275,3 +275,70 @@ body.public-page {
   display: block;
 }
 .public-lookup-form .public-btn { align-self: stretch; margin-top: 0.25rem; }
+
+/* Consistência de marca em todas as páginas públicas: botões primários do
+   Bootstrap (usados por formulários já existentes como o de submissão de
+   ticket e o de resposta pública) passam a teal em vez do azul por omissão -
+   isto aplica-se automaticamente sem precisar de tocar nesses formulários. */
+body.public-page .btn-primary {
+  background-color: #146b64;
+  border-color: #146b64;
+}
+body.public-page .btn-primary:hover,
+body.public-page .btn-primary:focus {
+  background-color: #0e4f4a;
+  border-color: #0e4f4a;
+}
+body.public-page .table th {
+  background: #f6f2e8;
+  color: #1c1b1a;
+  font-weight: 600;
+}
+
+/* Cartão genérico de página pública (submissão de ticket, consulta de
+   ticket) - mesma linguagem visual dos cartões da homepage */
+.public-page-card {
+  max-width: 640px;
+  margin: 0 auto;
+  background: #ffffff;
+  border: 1px solid #e1e0d9;
+  border-radius: 14px;
+  padding: 2rem 2rem 1.75rem;
+  box-shadow: 0 8px 24px -14px rgba(20, 20, 18, 0.18);
+}
+.public-page-card__icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  margin: 0 auto 1rem;
+}
+.public-page-card h1 {
+  text-align: center;
+  font-size: 1.4rem;
+  margin: 0 0 0.4rem;
+  letter-spacing: -0.01em;
+}
+.public-page-card > p.lead {
+  text-align: center;
+  color: #5c5750;
+  font-size: 0.92rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Nota de SLA no formulário de submissão, no lugar do campo "Data limite"
+   (ver design.md: "Por que a Data Limite virou uma nota de SLA?") */
+.public-sla-note {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: #e6f1ef;
+  color: #146b64;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-size: 0.88rem;
+  margin: 0.5rem 0 1.25rem;
+}
