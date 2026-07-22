@@ -64,29 +64,214 @@ future django-helpdesk update never conflicts with our customizations.
   color: #0b0b0b;
 }
 
-/* Public homepage - light nav strip replacing the removed sidebar
-   (see design.md: "Por que a página pública deixou de ter sidebar?") */
-.public-subnav {
+/* Público: cabeçalho próprio (marca Webcolinas + navegação), substitui a
+   navbar escura partilhada com o staff e a antiga sidebar removida.
+   (ver design.md: "Por que a página pública tem o seu próprio cabeçalho?") */
+.public-topbar {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  padding: 0.6rem 1.5rem;
+  background: #f6f2e8;
+  border-bottom: 1px solid #e6dfcd;
+}
+.public-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  text-decoration: none;
+  color: #1c1b1a;
+  flex-shrink: 0;
+  padding: 0.2rem 0;
+}
+.public-brand__logo {
+  height: 30px;
+  width: auto;
+  display: block;
+}
+.public-brand strong {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+.public-topbar__links {
   display: flex;
   gap: 1.5rem;
-  align-items: center;
-  padding: 0.6rem 1.5rem;
-  background: #f9f9f7;
-  border-bottom: 1px solid #e1e0d9;
+  flex-grow: 1;
   font-size: 0.9rem;
 }
-.public-subnav a {
-  color: #52514e;
+.public-topbar__links a {
+  color: #5c5750;
   text-decoration: none;
 }
-.public-subnav a:hover {
-  color: #0b0b0b;
+.public-topbar__links a:hover,
+.public-topbar__links a.active {
+  color: #1c1b1a;
+  font-weight: 600;
 }
+.public-topbar__auth {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.85rem;
+  color: #5c5750;
+}
+.public-btn-outline {
+  border: 1px solid #5c5750;
+  color: #1c1b1a;
+  background: none;
+  padding: 0.35rem 0.9rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.public-btn-outline:hover {
+  background: #1c1b1a;
+  color: #fff;
+  border-color: #1c1b1a;
+}
+body.public-page {
+  /* mesma família de tom quente do cabeçalho (#f6f2e8), mais claro para
+     as páginas terem alguma "elevação" nos cartões brancos por cima */
+  background: #faf7ef;
+}
+
 .public-content {
   width: 100%;
+  padding-top: 1.75rem;
   /* #content-wrapper deixou de estar dentro de #wrapper (removemos a sidebar),
      por isso perdeu o padding-bottom que vinha da regra "#wrapper #content-wrapper"
      do sb-admin.css - sem isto o rodapé antigo (absolute) sobrepunha o conteúdo.
      Já não temos rodapé nas páginas públicas, mas mantemos a folga por baixo. */
   padding-bottom: 3rem;
 }
+
+/* Homepage pública: hero + cartões de acção (ver design.md: "Por que a
+   homepage deixou de ter o formulário completo embutido?") */
+.public-hero {
+  background: linear-gradient(155deg, #146b64 0%, #0e4f4a 100%);
+  color: #fff;
+  padding: 2.75rem 1.5rem 3rem;
+  text-align: center;
+  border-radius: 16px;
+}
+.public-hero h1 {
+  margin: 0 0 0.5rem;
+  font-size: clamp(1.6rem, 3.2vw, 2.2rem);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.public-hero__brand {
+  color: #1c1b1a;
+}
+.public-hero p {
+  margin: 0 auto;
+  max-width: 46ch;
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 1rem;
+  line-height: 1.55;
+}
+
+.public-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.75rem;
+}
+@media (max-width: 860px) {
+  .public-cards { grid-template-columns: 1fr; }
+}
+
+.public-card {
+  background: #ffffff;
+  border: 1px solid #e1e0d9;
+  border-radius: 14px;
+  padding: 1.6rem 1.5rem;
+  box-shadow: 0 8px 24px -14px rgba(20, 20, 18, 0.18);
+  display: flex;
+  flex-direction: column;
+}
+.public-card__icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  margin: 0 auto 0.9rem;
+  align-self: center;
+}
+.public-card__icon--teal  { background: #e6f1ef; color: #146b64; }
+.public-card__icon--coral { background: #fbeae6; color: #d9553f; }
+.public-card__icon--ink   { background: #efece3; color: #5c5750; }
+
+.public-card h2 {
+  font-size: 1.1rem;
+  margin: 0 0 0.4rem;
+  letter-spacing: -0.01em;
+  text-align: center;
+}
+.public-card p {
+  font-size: 0.9rem;
+  color: #5c5750;
+  line-height: 1.5;
+  margin: 0 0 1.15rem;
+  flex-grow: 1;
+}
+
+.public-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  border: none;
+  border-radius: 8px;
+  padding: 0.6rem 1.1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  align-self: flex-start;
+}
+.public-btn--teal   { background: #146b64; color: #fff; }
+.public-btn--teal:hover   { background: #0e4f4a; color: #fff; }
+.public-btn--coral  { background: #d9553f; color: #fff; }
+.public-btn--coral:hover  { background: #b8402d; color: #fff; }
+.public-btn--muted  { background: #efece3; color: #1c1b1a; }
+.public-btn--muted:hover  { background: #e1ddce; color: #1c1b1a; }
+
+.public-kb-list {
+  list-style: none;
+  margin: 0 0 1.15rem;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex-grow: 1;
+}
+.public-kb-list li a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-decoration: none;
+  color: #1c1b1a;
+  font-size: 0.92rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #efece3;
+}
+.public-kb-list li:last-child a { border-bottom: none; }
+.public-kb-list li a span { color: #5c5750; }
+
+.public-lookup-form { display: flex; flex-direction: column; gap: 0.65rem; }
+.public-lookup-form label {
+  font-size: 0.8rem;
+  color: #5c5750;
+  margin-bottom: 0.2rem;
+  display: block;
+}
+.public-lookup-form .public-btn { align-self: stretch; margin-top: 0.25rem; }

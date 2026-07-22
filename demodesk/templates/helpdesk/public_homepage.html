@@ -3,79 +3,56 @@
 
 {% block helpdesk_title %}{% trans "Welcome to Helpdesk" %}{% endblock %}
 
-{% block helpdesk_breadcrumb %}
-    <li class="breadcrumb-item">
-        <a href="#">Public</a>
-    </li>
-    <li class="breadcrumb-item active">Homepage</li>
-{% endblock %}
-
 {% block helpdesk_body %}
-    <div class="container-fluid">
-        <div class="row">
-            {% if kb_categories %}
-                <div class="col-sm">
-                    <h2>{% trans "Knowledgebase Articles" %}</h2>
+    <div class="public-hero">
+        <h1>{% trans "Bem-vindo ao Portal de Suporte" %} Webcolinas</h1>
+        <p>{% trans "Abra um novo pedido de suporte ou acompanhe o estado de um ticket já existente — a nossa equipa responde o mais rápido possível." %}</p>
+    </div>
+
+    <div class="public-cards">
+        {% if kb_categories %}
+            <div class="public-card">
+                <div class="public-card__icon public-card__icon--ink"><i class="fas fa-database"></i></div>
+                <h2>{% trans "Base de Conhecimento" %}</h2>
+                <p>{% trans "Encontre respostas para as dúvidas mais comuns antes de abrir um pedido." %}</p>
+                <ul class="public-kb-list">
                     {% for category in kb_categories %}
-                        <div class="card" style="margin-top: 15px">
-                            <div class="card-body">
-                                <h5 class="card-title">{{ category.title }}</h5>
-                                <p class="card-text">{{ category.description }}</p>
-                                <p class="card-text">
-                                    <small class="text-muted">
-                                        <a href='{{ category.get_absolute_url }}'>
-                                            {% trans 'View articles' %} <i class="fa fa-arrow-right"></i>
-                                        </a>
-                                    </small>
-                                </p>
-                            </div>
-                        </div>
+                    <li><a href="{{ category.get_absolute_url }}">{{ category.title }} <span>&rarr;</span></a></li>
                     {% endfor %}
-                </div>
-            {% endif %}
-
-            <div class="col-sm">
-                <div class="card">
-                    <div class="card-body">
-                        <h2>{% trans "Submit a Ticket" %}</h2>
-                        {% include 'helpdesk/public_create_ticket_base.html' %}
-                    </div>
-                </div>
+                </ul>
+                <a class="public-btn public-btn--muted" href="{% url 'helpdesk:kb_index' %}">{% trans "Ver todos os artigos" %}</a>
             </div>
+        {% endif %}
 
-            {% if not helpdesk_settings.HELPDESK_VIEW_A_TICKET_PUBLIC and not helpdesk_settings.HELPDESK_SUBMIT_A_TICKET_PUBLIC %}
-                <h2>{% trans "Please use button at upper right to login first." %}</h2>
-            {% endif %}
-
-            {% if helpdesk_settings.HELPDESK_VIEW_A_TICKET_PUBLIC %}
-                <div class="col-sm">
-                    <div class="card">
-                        <div class="card-body">
-                            <h2>{% trans "View a Ticket" %}</h2>
-                            <form method='get' action="{% url 'helpdesk:public_view' %}">
-                                <fieldset>
-                                    <div class="mb-3 {% if field.errors %}has-error{% endif %}">
-                                        <label for='id_ticket'>{% trans "Ticket" %}</label>
-                                        <div class="input-group">
-                                            <input type='text' name='ticket' class='form-control'/>
-                                        </div>
-                                    </div>
-                                    <div class="mb-3 {% if field.errors %}has-error{% endif %}">
-                                        <label for='id_email'>{% trans "Your E-mail Address" %}</label>
-                                        <div class="input-group">
-                                            <input type='text' name='email' class='form-control'/>
-                                        </div>
-                                    </div>
-                                    <div class='buttons mb-3'>
-                                        <input type='submit' class="btn btn-primary" value='{% trans "View Ticket" %}'/>
-                                    </div>
-                                </fieldset>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            {% endif %}
+        <div class="public-card">
+            <div class="public-card__icon public-card__icon--teal"><i class="fas fa-plus"></i></div>
+            <h2>{% trans "Submeter um Ticket" %}</h2>
+            <p>{% trans "Descreva o seu pedido com o máximo de detalhe — a equipa entra em contacto assim que possível." %}</p>
+            <a class="public-btn public-btn--teal" href="{% url 'helpdesk:submit' %}">{% trans "Novo Ticket" %}</a>
         </div>
+
+        {% if not helpdesk_settings.HELPDESK_VIEW_A_TICKET_PUBLIC and not helpdesk_settings.HELPDESK_SUBMIT_A_TICKET_PUBLIC %}
+            <h2>{% trans "Please use button at upper right to login first." %}</h2>
+        {% endif %}
+
+        {% if helpdesk_settings.HELPDESK_VIEW_A_TICKET_PUBLIC %}
+            <div class="public-card">
+                <div class="public-card__icon public-card__icon--coral"><i class="fas fa-search"></i></div>
+                <h2>{% trans "Ver um Ticket" %}</h2>
+                <p>{% trans "Consulte o estado de um pedido já submetido." %}</p>
+                <form method='get' action="{% url 'helpdesk:public_view' %}" class="public-lookup-form">
+                    <div class="{% if field.errors %}has-error{% endif %}">
+                        <label for='id_ticket'>{% trans "Ticket" %}</label>
+                        <input type='text' name='ticket' id='id_ticket' class='form-control'/>
+                    </div>
+                    <div class="{% if field.errors %}has-error{% endif %}">
+                        <label for='id_email'>{% trans "O Seu Endereço de E-Mail" %}</label>
+                        <input type='text' name='email' id='id_email' class='form-control'/>
+                    </div>
+                    <button type='submit' class="public-btn public-btn--coral">{% trans "Ver Ticket" %}</button>
+                </form>
+            </div>
+        {% endif %}
     </div>
 {% endblock %}
 

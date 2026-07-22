@@ -44,6 +44,18 @@
 | Área de staff (`base.html`) mantém a sua barra lateral, intocada | ✅ |
 | Verificado: `/`, `/kb/` e `/view/` sem sessão — sem markup de sidebar, faixa de navegação presente, 4 cartões na homepage | ✅ |
 
+### Redesign completo da homepage pública (hero + cartões + marca) ✅ IMPLEMENTADO
+
+| Funcionalidade | Estado |
+|---|---|
+| Cabeçalho próprio (`public-topbar`) substitui a navbar escura partilhada com o staff — fundo creme, logo real da Webcolinas (`demodesk/static_src/helpdesk/img/logo-250-WH.png`), rótulo "Helpdesk" (o nome já está no logo), navegação e "Iniciar Sessão"/"Terminar Sessão" conforme o estado de login | ✅ |
+| Hero (`public-hero`) com "Bem-vindo ao Portal de Suporte" | ✅ |
+| Bug corrigido: rodapé "Powered by django-helpdesk" sobrepunha o conteúdo (perda de `padding-bottom` ao remover a sidebar) — removido o rodapé nas páginas públicas e ajustado o espaçamento | ✅ |
+| Base de Conhecimento: lista compacta de categorias num só cartão, em vez de um cartão por categoria | ✅ |
+| Submeter um Ticket: deixou de embutir o formulário completo na homepage — agora é um cartão simples com botão para `/tickets/submit/` (a página já existente, sem alterações) | ✅ |
+| Ver um Ticket: mantém o formulário real (`name="ticket"`, `name="email"`, acção `helpdesk:public_view`), só o visual mudou | ✅ |
+| **Funções testadas ponta-a-ponta após o redesign:** `/tickets/submit/` (200), `/kb/` (200), consulta de um ticket real por número+email (`SRV-5` + `teste@example.com`) devolve o ticket correcto | ✅ |
+
 ### Categorias de tickets ✅ IMPLEMENTADO
 
 | Funcionalidade | Estado |

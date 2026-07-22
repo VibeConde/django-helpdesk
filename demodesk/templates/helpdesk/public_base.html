@@ -11,29 +11,38 @@
 
 </head>
 
-<body id="bg-dark">
+<body id="bg-dark" class="public-page">
 
-    {% include "helpdesk/navigation-header.html" %}
-
-    <nav class="public-subnav">
-        <a href="{% url 'helpdesk:home' %}"><i class="fas fa-fw fa-home"></i> {% trans "Página Inicial" %}</a>
-        <a href="{% url 'helpdesk:submit' %}"><i class="fas fa-fw fa-plus-circle"></i> {% trans "Novo Ticket" %}</a>
-        {% if helpdesk_settings.HELPDESK_KB_ENABLED %}
-        <a href="{% url 'helpdesk:kb_index' %}"><i class="fas fa-fw fa-database"></i> {% trans "Base de Conhecimento" %}</a>
-        {% endif %}
-        {% if user.is_authenticated %}
-        <a href="{% url 'helpdesk:my-tickets' %}"><i class="fas fa-fw fa-tasks"></i> {% trans "Os Meus Tickets" %}</a>
-        {% endif %}
-    </nav>
+    <header class="public-topbar">
+        <a class="public-brand" href="{% url 'helpdesk:home' %}">
+            <img class="public-brand__logo" src="{% static 'helpdesk/img/logo-mark.png' %}" alt="Webcolinas">
+            <strong>{% trans "Helpdesk" %}</strong>
+        </a>
+        <nav class="public-topbar__links">
+            <a href="{% url 'helpdesk:home' %}"{% if request.path == '/' %} class="active"{% endif %}>{% trans "Página Inicial" %}</a>
+            <a href="{% url 'helpdesk:submit' %}"{% if 'submit' in request.path %} class="active"{% endif %}>{% trans "Novo Ticket" %}</a>
+            {% if helpdesk_settings.HELPDESK_KB_ENABLED %}
+            <a href="{% url 'helpdesk:kb_index' %}"{% if 'kb' in request.path %} class="active"{% endif %}>{% trans "Base de Conhecimento" %}</a>
+            {% endif %}
+            {% if user.is_authenticated %}
+            <a href="{% url 'helpdesk:my-tickets' %}"{% if 'my-tickets' in request.path %} class="active"{% endif %}>{% trans "Os Meus Tickets" %}</a>
+            {% endif %}
+        </nav>
+        <div class="public-topbar__auth">
+            {% if user.is_authenticated %}
+                <span>{{ user.get_full_name|default:user.get_username }}</span>
+                <form action="{% url 'helpdesk:logout' %}" method="post" style="display:inline;margin:0">{% csrf_token %}
+                    <button type="submit" class="public-btn-outline">{% trans "Terminar Sessão" %}</button>
+                </form>
+            {% else %}
+                <a class="public-btn-outline" href="{% url 'helpdesk:login' %}?next={% if next %}{{ next|escape }}{% else %}{% url 'helpdesk:home' %}{% endif %}">{% trans "Iniciar Sessão" %}</a>
+            {% endif %}
+        </div>
+    </header>
 
     <div id="content-wrapper" class="public-content">
 
         <div class="container-fluid">
-
-            <!-- Breadcrumbs-->
-            <ol class="breadcrumb">
-                {% block helpdesk_breadcrumb %}{% endblock %}
-            </ol>
 
             {% block helpdesk_body %}{% endblock %}
 
