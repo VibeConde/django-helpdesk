@@ -37,6 +37,66 @@
                 var canalWrap = canalInput.closest('.form-group');
                 if (canalWrap) { canalWrap.style.display = 'none'; }
             }
+
+            // Subtipo depende do "Tipo de Pedido" (Fila) escolhido - a lista
+            // completa de valores válidos vive no CustomField "subtipo" (o
+            // servidor valida contra ela), isto só filtra o que aparece.
+            var SUBTIPOS_POR_FILA = {
+                "3":  ["Configurar app de email", "Criar endereço", "Mensagem de ausência", "Reencaminhar email", "Reset de password"],
+                "4":  ["Configuração", "Licença nova", "Orçamento", "Problema de acesso", "Reset de password"],
+                "5":  ["Configuração DNS", "Migração", "Orçamento", "Problema técnico", "Upgrade de plano"],
+                "6":  ["Novo registo", "Orçamento", "Renovação", "Transferência"],
+                "7":  ["Instalação", "Orçamento", "Problema", "Renovação"],
+                "8":  ["Alterações/actualizações", "Erro no site", "Novo site", "Orçamento"],
+                "9":  ["Alterações", "Erro", "Nova loja", "Orçamento"],
+                "10": ["Limpeza de espaço", "Nova instalação", "Orçamento", "Problema técnico", "Upgrade", "Upgrade SAAS", "Utilizadores"],
+                "11": ["Ajustes", "Novo projecto", "Orçamento", "Relatório"],
+                "12": ["Logo/identidade", "Material impresso", "Web"],
+                "13": ["Ajustes", "Configuração", "Orçamento", "Relatório"],
+                "14": [],
+                "15": [],
+                "16": ["Dificuldade Login", "Indisponibilidade"]
+            };
+
+            var queueSelect = document.getElementById('id_queue');
+            var subtipoSelect = document.getElementById('id_custom_subtipo');
+            var subtipoWrap = subtipoSelect ? subtipoSelect.closest('.form-group') : null;
+
+            // Mover o "Subtipo" para logo a seguir ao "Tipo de Pedido" -
+            // por omissão fica no fim (os custom fields são sempre
+            // acrescentados depois dos campos nativos do Ticket).
+            if (queueSelect && subtipoWrap) {
+                var queueWrap = queueSelect.closest('.form-group');
+                if (queueWrap && queueWrap.parentNode) {
+                    queueWrap.parentNode.insertBefore(subtipoWrap, queueWrap.nextSibling);
+                }
+            }
+
+            function atualizarSubtipos() {
+                if (!subtipoSelect || !subtipoWrap) { return; }
+                var opcoes = SUBTIPOS_POR_FILA[queueSelect.value] || [];
+                subtipoSelect.innerHTML = '';
+                if (opcoes.length === 0) {
+                    subtipoWrap.style.display = 'none';
+                    return;
+                }
+                subtipoWrap.style.display = '';
+                var vazio = document.createElement('option');
+                vazio.value = '';
+                vazio.textContent = '---------';
+                subtipoSelect.appendChild(vazio);
+                opcoes.forEach(function (texto) {
+                    var opt = document.createElement('option');
+                    opt.value = texto;
+                    opt.textContent = texto;
+                    subtipoSelect.appendChild(opt);
+                });
+            }
+
+            if (queueSelect) {
+                queueSelect.addEventListener('change', atualizarSubtipos);
+                atualizarSubtipos();
+            }
         })();
         </script>
     {% else %}

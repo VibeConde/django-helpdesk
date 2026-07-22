@@ -25,11 +25,9 @@ Sistema de tickets operacional (django-helpdesk) para gerir os pedidos de suport
 - [x] Login `admin` / `Pa33w0rd` a funcionar em `http://localhost:8080`
 
 ### Categorias de tickets (filas)
-- [x] Fila "Servidores & Alojamento" — logins, indisponibilidade, criação de contas de alojamento
-- [x] Fila "Email & Microsoft 365"
-- [x] Fila "Segurança & Alertas" — alertas automáticos (ex. Wordfence) e incidentes de segurança
-- [x] Fila "Geral" — tudo o que não encaixa nas anteriores (Moodle/e-learning, novas plataformas, etc.)
-- [x] Campo custom "Canal" (Email / Telefone / WhatsApp / Outro) em cada ticket
+- [x] 14 filas com o catálogo real de serviços (Email, Microsoft 365, Alojamento web, Registo de domínio, Certificado SSL, Criação de site, Loja online, Moodle/e-learning, SEO, Design gráfico, Marketing digital, Registo de marca, Manutenção/suporte, Servidor) — ver `design.md` para a lista completa e os subtipos
+- [x] Campo custom "Subtipo" — depende da fila escolhida (JavaScript filtra as opções; o valor é validado no servidor)
+- [x] Campo custom "Canal" (Email / Telefone / WhatsApp / Outro) — escondido no formulário público e fixo em "Email"
 
 ### Fluxo de tickets
 - [ ] Confirmar mapeamento de estados a usar (ver `design.md`) e ajustar `HELPDESK_TICKET_STATUS_CHOICES` só se necessário

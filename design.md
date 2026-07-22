@@ -24,14 +24,28 @@ O Webcolinas-Manager tem o seu próprio sistema de pedidos (`Request`), usado co
 | CLOSED | Closed |
 | REOPENED | Reopened |
 
-## Filas criadas
+## Filas (catálogo real de serviços, v2)
 
-| Fila | Slug | Cobre |
+As 4 filas genéricas iniciais (aproximadas a partir de padrões observados nos dados) foram substituídas pelo catálogo real de serviços que o utilizador já usava na plataforma anterior — 14 filas, cada uma mapeada para "Tipo de Pedido" no formulário:
+
+| Fila | Slug | Subtipos (campo "Subtipo", dependente da fila) |
 |---|---|---|
-| Servidores & Alojamento | `SRV` | Logins, indisponibilidade, criação de contas de alojamento |
-| Email & Microsoft 365 | `MAIL` | Problemas de email e Microsoft 365 |
-| Segurança & Alertas | `SEC` | Alertas automáticos (ex. Wordfence), incidentes de segurança |
-| Geral | `GERAL` | Moodle/e-learning, novas plataformas, tudo o que não encaixa nas outras |
+| Email | `EMAIL` | Criar endereço, Reset de password, Mensagem de ausência, Configurar app de email, Reencaminhar email |
+| Microsoft 365 | `M365` | Licença nova, Reset de password, Configuração, Problema de acesso, Orçamento |
+| Alojamento web | `HOST` | Migração, Upgrade de plano, Problema técnico, Configuração DNS, Orçamento |
+| Registo de domínio | `DOM` | Novo registo, Transferência, Renovação, Orçamento |
+| Certificado SSL | `SSL` | Instalação, Renovação, Problema, Orçamento |
+| Criação de site | `SITE` | Novo site, Alterações/actualizações, Erro no site, Orçamento |
+| Loja online | `SHOP` | Nova loja, Alterações, Erro, Orçamento |
+| Moodle / e-learning | `MOODLE` | Nova instalação, Problema técnico, Utilizadores, Limpeza de espaço, Upgrade SAAS, Upgrade, Orçamento |
+| SEO | `SEO` | Novo projecto, Relatório, Ajustes, Orçamento |
+| Design gráfico | `DESIGN` | Logo/identidade, Material impresso, Web |
+| Marketing digital | `MKT` | Configuração, Relatório, Ajustes, Orçamento |
+| Registo de marca | `MARCA` | (sem subtipos) |
+| Manutenção / suporte | `SUPORTE` | (sem subtipos) |
+| Servidor | `SERVER` | Indisponibilidade, Dificuldade Login |
+
+"Segurança & Alertas" e "Geral" (v1) saíram — decisão do utilizador, para não ter filas que não fazem parte do catálogo real de serviços escolhido pelo cliente.
 
 Ficheiro fonte: `demodesk/fixtures/webcolinas_categories.json`. Carregado via `python manage.py loaddata webcolinas_categories.json` (já incluído no alvo `demo` do `Makefile`).
 
@@ -48,3 +62,6 @@ O `demodesk` não tem app própria (só consome `helpdesk` + config) — criar u
 
 ### Por que não importar os 36 pedidos reais do Webcolinas-Manager?
 Decisão do utilizador: esses pedidos têm domínios de clientes reais, contactos e alertas de segurança de terceiros. Trazer isso para um sistema novo (que pode um dia ir para produção) não se justifica só para "ter tickets prontos" — a estrutura de categorias resolve o mesmo problema sem mover dados sensíveis.
+
+### Por que "Subtipo" é um `CustomField` com JavaScript, e não 60 filas?
+60 filas seriam 60 conjuntos de permissões/caixas de correio — infraestrutura a mais para o que é só uma segunda dimensão de classificação. Um `CustomField` "Subtipo" guarda o valor; o JavaScript no formulário só filtra visualmente as opções conforme a fila escolhida (o Django valida no servidor contra a lista completa de valores, independentemente da fila — a coerência categoria↔subtipo é garantida pela interface, não pelo modelo de dados).

@@ -1,0 +1,151 @@
+{% extends "helpdesk/base.html" %}{% load i18n bootstrap4form %}
+
+{% block helpdesk_title %}{% trans "Create Ticket" %}{% endblock %}
+
+{% block helpdesk_breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="#">{% trans "Tickets" %}</a>
+    </li>
+    <li class="breadcrumb-item active">{% trans "Create Ticket" %}</li>
+{% endblock %}
+
+{% block helpdesk_head %}
+{% endblock %}
+
+{% block helpdesk_body %}
+    <div class="container">
+        <div class="card card-register mx-auto mt-5">
+            <div class="card-header">{% trans "Submit a Ticket" %}</div>
+            <div class="card-body">
+                <p>
+                    {% trans "Unless otherwise stated, all fields are required." %}
+                    {% trans "Please provide as descriptive a title and description as possible." %}
+                </p>
+
+                {% if form.errors %}
+                    {% include 'helpdesk/include/alert_form_errors.html' %}
+                {% endif %}
+
+                <form method='post' enctype='multipart/form-data'>
+                    {% csrf_token %}
+                    {% for field in form %}
+                        {% if field.is_hidden %}
+                            {{ field }}
+                        {% else %}
+                            <div class="mb-3">
+                                <label for='id_{{ field.name }}'>
+                                    {{ field.label }}
+                                    {% if not field.field.required %}
+                                        ({% trans "Optional" %})
+                                    {% endif %}
+                                </label>
+                                {{ field }}
+                                {% if field.errors %}
+                                    <small class='error'>{{ field.errors }}</small>
+                                {% endif %}
+                                {% if field.help_text %}
+                                    <small class='form_help_text help-block'>{% trans field.help_text %}</small>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                    <button type="submit" class="btn btn-primary btn-lg btn-block">
+                        <i class="fa fa-send"></i> {% trans "Submit Ticket" %}
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block helpdesk_js %}
+    {{ form.media.js }}
+    <script>
+        // this function listens for changes on any file input, and
+        // emits the appropriate event to update the input's text.
+        // Needed to have properly styled file input buttons! (this really shouldn't be this hard...)
+        $(document).on('change', ':file', function () {
+            const input = $(this),
+                inputWidgetNum = $(this).attr('id').split("file")[1],
+                numFiles = input.get(0).files ? input.get(0).files.length : 1,
+                label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+            input.trigger('fileselect', [numFiles, label, inputWidgetNum]);
+        });
+    </script>
+    <script>
+    (function () {
+        var queueLabel = document.querySelector('label[for="id_queue"]');
+        if (queueLabel) {
+            var texto = document.createTextNode("{% trans 'Tipo de Pedido' %}");
+            queueLabel.innerHTML = '';
+            queueLabel.appendChild(texto);
+        }
+
+        var titleInput = document.getElementById('id_title');
+        if (titleInput) { titleInput.placeholder = "{% trans 'Tipo de problema — nome da empresa ou domínio' %}"; }
+
+        // Subtipo depende do "Tipo de Pedido" (Fila) escolhido - igual ao
+        // formulário público (ver public_create_ticket_base.html). Aqui,
+        // ao contrário do formulário público, "Data limite" e "Canal"
+        // continuam visíveis e editáveis - a equipa precisa de os poder
+        // preencher (ex: registar que o pedido chegou por telefone).
+        var SUBTIPOS_POR_FILA = {
+            "3":  ["Configurar app de email", "Criar endereço", "Mensagem de ausência", "Reencaminhar email", "Reset de password"],
+            "4":  ["Configuração", "Licença nova", "Orçamento", "Problema de acesso", "Reset de password"],
+            "5":  ["Configuração DNS", "Migração", "Orçamento", "Problema técnico", "Upgrade de plano"],
+            "6":  ["Novo registo", "Orçamento", "Renovação", "Transferência"],
+            "7":  ["Instalação", "Orçamento", "Problema", "Renovação"],
+            "8":  ["Alterações/actualizações", "Erro no site", "Novo site", "Orçamento"],
+            "9":  ["Alterações", "Erro", "Nova loja", "Orçamento"],
+            "10": ["Limpeza de espaço", "Nova instalação", "Orçamento", "Problema técnico", "Upgrade", "Upgrade SAAS", "Utilizadores"],
+            "11": ["Ajustes", "Novo projecto", "Orçamento", "Relatório"],
+            "12": ["Logo/identidade", "Material impresso", "Web"],
+            "13": ["Ajustes", "Configuração", "Orçamento", "Relatório"],
+            "14": [],
+            "15": [],
+            "16": ["Dificuldade Login", "Indisponibilidade"]
+        };
+
+        var queueSelect = document.getElementById('id_queue');
+        var subtipoSelect = document.getElementById('id_custom_subtipo');
+        var subtipoWrap = subtipoSelect ? subtipoSelect.closest('.mb-3') : null;
+
+        // Mover o "Subtipo" para logo a seguir ao "Tipo de Pedido" - por
+        // omissão fica no fim (os custom fields são sempre acrescentados
+        // depois dos campos nativos do Ticket).
+        if (queueSelect && subtipoWrap) {
+            var queueWrap = queueSelect.closest('.mb-3');
+            if (queueWrap && queueWrap.parentNode) {
+                queueWrap.parentNode.insertBefore(subtipoWrap, queueWrap.nextSibling);
+            }
+        }
+
+        function atualizarSubtipos() {
+            if (!subtipoSelect || !subtipoWrap) { return; }
+            var opcoes = SUBTIPOS_POR_FILA[queueSelect.value] || [];
+            subtipoSelect.innerHTML = '';
+            if (opcoes.length === 0) {
+                subtipoWrap.style.display = 'none';
+                return;
+            }
+            subtipoWrap.style.display = '';
+            var vazio = document.createElement('option');
+            vazio.value = '';
+            vazio.textContent = '---------';
+            subtipoSelect.appendChild(vazio);
+            opcoes.forEach(function (texto) {
+                var opt = document.createElement('option');
+                opt.value = texto;
+                opt.textContent = texto;
+                subtipoSelect.appendChild(opt);
+            });
+        }
+
+        if (queueSelect) {
+            queueSelect.addEventListener('change', atualizarSubtipos);
+            atualizarSubtipos();
+        }
+    })();
+    </script>
+{% endblock %}

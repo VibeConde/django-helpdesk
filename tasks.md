@@ -80,6 +80,23 @@
 | Criar um ticket de teste para validar o fluxo ponta-a-ponta | ✅ — ticket #5 "Teste - servidor em baixo" na fila Servidores & Alojamento, canal Telefone (dados fictícios, pode ser apagado quando quiser) |
 | Um ticket de exemplo em cada uma das 4 filas (dados fictícios, sem PII real) | ✅ — #5 Servidores & Alojamento, #6 Email & Microsoft 365, #7 Segurança & Alertas, #8 Geral |
 
+### Catálogo de filas v2: 14 categorias reais + subtipos ✅ IMPLEMENTADO
+
+(Substitui a secção anterior — o utilizador enviou o catálogo real de serviços que já usava noutra plataforma; as 4 filas genéricas e os tickets de exemplo #5-9 foram substituídos.)
+
+| Funcionalidade | Estado |
+|---|---|
+| `webcolinas_categories.json` reescrito: 14 filas (Email, Microsoft 365, Alojamento web, Registo de domínio, Certificado SSL, Criação de site, Loja online, Moodle/e-learning, SEO, Design gráfico, Marketing digital, Registo de marca, Manutenção/suporte, Servidor) — "Segurança & Alertas" e "Geral" saíram | ✅ |
+| Novo `CustomField` "Subtipo" (37 valores únicos, todos os subtipos enviados pelo utilizador, texto exacto) | ✅ |
+| `public_create_ticket_base.html`: JavaScript com o mapa fila→subtipos — filtra as opções visíveis do "Subtipo" conforme o "Tipo de Pedido" escolhido; esconde o campo por completo para "Registo de marca"/"Manutenção / suporte" (sem subtipos) | ✅ |
+| Listas de subtipos (por fila e a lista principal do campo) postas por ordem alfabética, sem duplicados — confirmado com um teste automatizado num browser real (Playwright), não só por leitura de HTML | ✅ |
+| **Formulário interno de staff (`create_ticket.html`, override novo):** mesmo relabel "Fila"→"Tipo de Pedido" e mesmo filtro dependente de "Subtipo" — mas aqui "Canal" e "Data limite" continuam visíveis e editáveis (a equipa precisa de registar o canal real, ex. Telefone, ao criar um ticket em nome de um cliente) | ✅ |
+| "Subtipo" movido (via JS, `insertBefore`) para logo a seguir a "Tipo de Pedido" em ambos os formulários, em vez de ficar no fim | ✅ |
+| **Testado com Playwright (browser real, com login):** ticket #14 criado no formulário de staff com fila=Email, canal=Telefone, subtipo="Reset de password" — confirma o cenário "cliente liga, equipa cria o ticket em nome dele" | ✅ |
+| Tickets de exemplo antigos (#5-9) apagados — ficaram com filas trocadas depois da fixture substituir os pk 3-6 (a fila é `CASCADE`/`loaddata` faz *update*, não *insert*, por isso não desapareceram sozinhos; tiveram de ser removidos à mão) | ✅ |
+| 4 novos tickets de teste criados nas filas certas, com subtipo: #10 Email/Reset de password, #11 Servidor/Indisponibilidade, #12 Alojamento web/Configuração DNS, #13 Registo de marca (sem subtipo, confirma que funciona sem um) | ✅ |
+| **Nota de arquitetura:** a validação do "Subtipo" no servidor é contra a lista completa de 37 valores, não filtrada por fila — a coerência categoria↔subtipo é garantida só pela interface (JS), não pelo modelo de dados. Documentado em `design.md`. | ✅ |
+
 ### Idioma (pt-PT) ✅ IMPLEMENTADO
 
 | Funcionalidade | Estado |
