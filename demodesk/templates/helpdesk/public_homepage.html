@@ -54,6 +54,27 @@
             </div>
         {% endif %}
     </div>
+
+    <div class="public-how">
+        <h2>{% trans "Como funciona" %}</h2>
+        <div class="public-how__steps">
+            <div class="public-how__step">
+                <div class="public-how__icon public-how__icon--teal"><i class="fas fa-paper-plane"></i></div>
+                <h3>{% trans "1. Submeter" %}</h3>
+                <p>{% trans "Preenche o formulário com os detalhes do seu pedido." %}</p>
+            </div>
+            <div class="public-how__step">
+                <div class="public-how__icon public-how__icon--coral"><i class="fas fa-search"></i></div>
+                <h3>{% trans "2. Acompanhar" %}</h3>
+                <p>{% trans "Usa o número do ticket para consultar o progresso." %}</p>
+            </div>
+            <div class="public-how__step">
+                <div class="public-how__icon public-how__icon--green"><i class="fas fa-check"></i></div>
+                <h3>{% trans "3. Resolver" %}</h3>
+                <p>{% trans "A nossa equipa trabalha para resolver o seu pedido." %}</p>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block helpdesk_js %}

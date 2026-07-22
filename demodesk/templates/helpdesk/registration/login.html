@@ -1,0 +1,69 @@
+{% extends "helpdesk/public_base.html" %}{% load i18n bootstrap4form %}
+{% block helpdesk_title %}{% trans "Helpdesk Login" %}{% endblock %}
+
+{% block helpdesk_body %}
+
+{% if request.user.is_authenticated %}
+    <meta http-equiv="REFRESH" content="0;url={% url 'helpdesk:home' %}">
+{% else %}
+
+    <div class="container">
+      <div class="card card-login mx-auto mt-5">
+        <div class="card-header">{% trans 'Please Sign In' %}</div>
+        <div class="card-body">
+          <form role="form" method='post' action='./'>
+                {% if form.errors %}
+                <div class="alert alert-danger">{% trans "Your username and password didn't match. Please try again." %}</div>
+                {% endif %}
+            <div class="mb-3">
+              <div class="form-label-group">
+                <input type="text" id="username" name="username" class="form-control" placeholder="Username" required="required" autofocus="autofocus">
+                <label for="username">Username</label>
+              </div>
+            </div>
+            <div class="mb-3">
+              <div class="form-label-group">
+                <input type="password" id="password" name="password" class="form-control" placeholder="Password" required="required">
+                <label for="password">Password</label>
+              </div>
+            </div>
+            <div class="mb-3">
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" value="remember-me">
+                  {% trans 'Remember Password' %}
+                </label>
+              </div>
+            </div>
+            <input class="btn btn-lg btn-primary btn-block" type='submit' value='{% trans "Login" %}' />
+            {% if next %}
+              <input type="hidden" name="next" value="{{ next }}" />
+            {% endif %}
+          {% csrf_token %}</form>
+        </div>
+      </div>
+
+      <div class="public-howitworks">
+        <h2>{% trans "Como Funciona" %}</h2>
+        <div class="public-howitworks__steps">
+          <div class="public-howitworks__step">
+            <div class="icon icon--1"><i class="fas fa-pen"></i></div>
+            <h3>{% trans "1. Submeter" %}</h3>
+            <p>{% trans "Descreva o seu pedido e envie-o em poucos minutos." %}</p>
+          </div>
+          <div class="public-howitworks__step">
+            <div class="icon icon--2"><i class="fas fa-search"></i></div>
+            <h3>{% trans "2. Acompanhar" %}</h3>
+            <p>{% trans "Consulte o estado do seu ticket com o número e o email." %}</p>
+          </div>
+          <div class="public-howitworks__step">
+            <div class="icon icon--3"><i class="fas fa-check"></i></div>
+            <h3>{% trans "3. Resolver" %}</h3>
+            <p>{% trans "A nossa equipa trata do pedido até ficar resolvido." %}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+{% endif %}
+{% endblock %}

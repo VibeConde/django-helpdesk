@@ -176,6 +176,52 @@ body.public-page {
   line-height: 1.55;
 }
 
+/* "Como funciona" - faixa explicativa entre o hero e os cartões de acção */
+.public-how {
+  text-align: center;
+  margin-top: 4.2rem;
+}
+.public-how > h2 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #5c5750;
+  margin: 0 0 1.25rem;
+}
+.public-how__steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+@media (max-width: 860px) {
+  .public-how__steps { grid-template-columns: 1fr; }
+}
+.public-how__icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  margin: 0 auto 0.75rem;
+}
+.public-how__icon--teal  { background: #e6f1ef; color: #146b64; }
+.public-how__icon--coral { background: #fbeae6; color: #d9553f; }
+.public-how__icon--green { background: #e3f5e3; color: #0ca30c; }
+.public-how__step h3 {
+  font-size: 1rem;
+  margin: 0 0 0.3rem;
+  letter-spacing: -0.01em;
+}
+.public-how__step p {
+  font-size: 0.88rem;
+  color: #5c5750;
+  margin: 0;
+  line-height: 1.5;
+}
+
 .public-cards {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -236,7 +282,7 @@ body.public-page {
   font-weight: 600;
   text-decoration: none;
   cursor: pointer;
-  align-self: flex-start;
+  align-self: stretch;
 }
 .public-btn--teal   { background: #146b64; color: #fff; }
 .public-btn--teal:hover   { background: #0e4f4a; color: #fff; }
@@ -341,4 +387,52 @@ body.public-page .table th {
   padding: 0.75rem 1rem;
   font-size: 0.88rem;
   margin: 0.5rem 0 1.25rem;
+}
+
+/* "Como Funciona" - painel de 3 passos (login e outras páginas públicas) */
+.public-howitworks {
+  max-width: 720px;
+  margin: 2rem auto 0;
+  text-align: center;
+}
+.public-howitworks h2 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #5c5750;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin: 0 0 1.5rem;
+}
+.public-howitworks__steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+@media (max-width: 700px) {
+  .public-howitworks__steps { grid-template-columns: 1fr; }
+}
+.public-howitworks__step .icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 0.75rem;
+  color: #fff;
+  font-size: 1.1rem;
+}
+.public-howitworks__step .icon--1 { background: #146b64; }
+.public-howitworks__step .icon--2 { background: #c98500; }
+.public-howitworks__step .icon--3 { background: #0ca30c; }
+.public-howitworks__step h3 {
+  font-size: 0.95rem;
+  margin: 0 0 0.3rem;
+  color: #1c1b1a;
+}
+.public-howitworks__step p {
+  font-size: 0.85rem;
+  color: #5c5750;
+  margin: 0;
+  line-height: 1.5;
 }
