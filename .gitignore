@@ -59,6 +59,9 @@ src/helpdesk/static/helpdesk/vendor/*
 uv.lock
 demodesk/db.sqlite3
 
+# === ./app start|stop (PID + log do servidor local) ===
+.run/
+
 # Development files
 .vscode/
 .cursor/

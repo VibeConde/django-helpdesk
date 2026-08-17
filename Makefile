@@ -123,6 +123,26 @@ demo:
 rundemo: demo
 	uv run manage.py runserver 8080
 
+#: start - Start the demo server in the background.
+.PHONY: start
+start:
+	./app start
+
+#: stop - Stop the background demo server.
+.PHONY: stop
+stop:
+	./app stop
+
+#: restart - Restart the background demo server.
+.PHONY: restart
+restart:
+	./app restart
+
+#: status - Show whether the background demo server is running.
+.PHONY: status
+status:
+	./app status
+
 #: migrations - Create Django migrations for this project.
 .PHONY: migrations
 migrations: demo
